@@ -1,7 +1,17 @@
-##### 一个好的哈希函数：
+##### 11.1 Direct-address tables
+
+##### 11.2 Hash Tables
+
+> ###### Collision resolution by chaining
+
+##### 11.3 Hashing Functions
+
+###### a good hash function contains：
 
 > `hashing by division /`
 >
 > `hashing by multiplication/`
 >
 > `universal hashing`(use randomization to provide provably good performance)
+
+#### scheme: simple uniform hashing
