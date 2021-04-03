@@ -36,4 +36,7 @@
 > three method :
 > > Linear probing
 > > Quadratic probing
-> > Double hashing
+> > **Double hashing**  :`h(k,i)=(h1(k) + ih2(k))modm` both `h1` and `h2` are auxiliary hash functions 
+> > **`hints:`h2(k)  must be relatively prime to the hash-table size m for the entire hash table to be searched** 
+> >               
+
