@@ -6,14 +6,15 @@
 
 ### Insertion and Deletion
 > #### Insertion
->![1617606209037](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1617606209037.png)
+>> <img src = "img\2">
 
 > > Run Time :`O(h)`
 
 > **Transplant(T,u,v)**
+>
 > #### Deletion 
 >
-> <img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1617616144934.png"/>
+> <img src="img\1">
 >
 > > Run Time :`O(h)`
 >
