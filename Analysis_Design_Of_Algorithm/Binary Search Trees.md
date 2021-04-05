@@ -6,7 +6,7 @@
 
 ### Insertion and Deletion
 > #### Insertion
->> <img src = "img\2">
+>> <img src = "img\1.png">
 
 > > Run Time :`O(h)`
 
@@ -14,7 +14,7 @@
 >
 > #### Deletion 
 >
-> <img src="img\1">
+> <img src="img\2.png">
 >
 > > Run Time :`O(h)`
 >
