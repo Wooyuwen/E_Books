@@ -38,5 +38,8 @@
 > > Quadratic probing
 > > **Double hashing**  :`h(k,i)=(h1(k) + ih2(k))modm` both `h1` and `h2` are auxiliary hash functions 
 > > **`hints:`h2(k)  must be relatively prime to the hash-table size m for the entire hash table to be searched** 
-> >               
+> > **一致散列哈希** 
+> >
+> > > upper bound 不成功查找:`1/(1-α)` 成功查找:`1/αln(1/(1-α))`
+
 
