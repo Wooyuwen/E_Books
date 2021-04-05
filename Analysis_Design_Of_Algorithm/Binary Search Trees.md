@@ -13,7 +13,7 @@
 > **Transplant(T,u,v)**
 > #### Deletion 
 >
-> ![1617616144934](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1617616144934.png)
+> <img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1617616144934.png"/>
 >
 > > Run Time :`O(h)`
 >
