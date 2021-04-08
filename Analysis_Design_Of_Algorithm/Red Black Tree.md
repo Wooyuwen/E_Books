@@ -7,7 +7,7 @@
 > - no continuous red nodes
 > - all simple paths from the node to descendant leaves contain the same number of black nodes.
 
-### **Lemma 13.1 **
+### Lemma 13.1
 
 > A red-black tree with n internal nodes has height at most `2lg(n+1)`
 
