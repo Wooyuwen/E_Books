@@ -9,11 +9,11 @@
 
 ###### a good hash function contains：
 
-> `hashing by division /`
+> - `hashing by division /`
 >
-> `hashing by multiplication/`
+> - `hashing by multiplication/`
 >
-> `universal hashing`(use randomization to provide provably good performance)
+> - `universal hashing`(use randomization to provide provably good performance)
 
 #### scheme: simple uniform hashing
 > universal hashing: `H` be a finite collection of hash functions that map a given universe ` U` of keys into the range` {0,1,...,m-1}`.Such a collection is said to be `universal` if for each pair of distinct keys `k,l `belongs to` U`, the number of hash functions h belongs to `H `for which` h(k)=h(l)` is at most `|H|/m`.
