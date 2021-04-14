@@ -98,6 +98,15 @@
 > if y-original-color==BLACK
 >      RB-DELETE-FIXUP(T,x)
 > ```
->
-> 
 
+
+
+> ```
+> RB-DELETE-FIXUP:
+> ```
+>
+> <img src = "img\3.png">
+
+> 推断图:
+>
+> <img src = "img\4.jpg">
