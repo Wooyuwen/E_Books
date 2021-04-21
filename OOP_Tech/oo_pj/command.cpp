@@ -27,27 +27,7 @@ class Command{
        Command();  
 };
 
-class OpenCommand : public Command{
-    public :
-       OpenCommand(Application*);
-       virtual void Execute();
-    protected:
-       Application* _application;
-       char* _response;
-};
 
-OpenCommand::OpenCommand(Application* a){
-    _application =a;
-}
-
-void OpenCommand::Execute(){
-    const char* name=AskUser();
-    if(name!=0){
-        Document* document = new Document(name);
-        _application->Add(document);
-        document->Open();
-    }
-}
 
 class Document{
     private:
