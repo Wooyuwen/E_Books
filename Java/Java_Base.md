@@ -1,5 +1,8 @@
 # Java__BaseConcepts
 
+> - JRE: java运行环境，为`Java`的运行提供了所需的环境。它是一个JVM程序，主要包括了JVM的标准实现和一些`Java`基本类库
+> - JDK:`Java`开发工具包，提供了`Java`的开发以及运行环境
+
 
 
 #### java的加载和运行
@@ -14,18 +17,6 @@
 > - JVM将字节码文件 **解释** 成二进制文件并运行。
 >
 > `classpath`：能让ClassLoader去指定路径下载字节码文件，在用户环境变量中设置
-
-
-
-#### 注释 好的开发习惯：多写注释
-
-> 只生成在源文件中，不存在于class文件中
-
-> **单行注释** ：`//`
->
-> **多行注释**: `/* \n\n\n\n   */`
->
-> **javadoc多行注释**:`/** \n*\n*\n*\n*\n */`：会被工具解析提取并生成文档
 
 
 
@@ -61,7 +52,7 @@
 > >
 > > - 静态变量并没有像c++的作用域，作用域的限制只能通过private/public/protected来修饰。
 > >
-> > - **静态方法和静态变量都可以通过对象访问。**
+> > - **静态方法和静态变量都可以通过对象访问,因为静态方法不依赖具体实例，所以必须实现。**
 >
 > > **`synchronized`**:（**方法**）
 > >
@@ -147,12 +138,6 @@
 > java完全采用动态内存分配方式，每创建新对象都使用new关键字来构建此对象的动态实例。
 
 
-#### 重载
-
->- 代码美观
->
->- 方便记忆
-
 
 
 ****
@@ -161,7 +146,7 @@
 
 
 
-## 面向对象（封装、继承、多态）
+# 面向对象（封装、继承、多态）
 
 
 > - `this `
@@ -200,7 +185,7 @@
 
 
 
-#### Java 静态分派和动态分派
+#### 静态分派和动态分派
 
 > 函数调用在class文件中存储的是符号引用
 >
@@ -216,7 +201,7 @@
 
 
 
-#### Java抽象类和抽象方法
+#### 抽象类和抽象方法
 
 > - 抽象类不能被实例化
 > - 抽象类中不一定含有抽象方法，但是抽象方法一定属于抽象类
@@ -225,13 +210,7 @@
 
 
 
-#### 异常处理
-
-> 
-
-
-
-#### 创建的对象存储到了什么地方
+#### 创建的对象存储
 
 > - 寄存器：最快的存储区，位于处理器的内部，但是数量有限
 >
@@ -244,12 +223,6 @@
 > - 常量存储：通常直接存放在程序代码内部，比较安全，永远不会改变。
 >
 > - 非RAM存储：如果数据完全存活于程序之外，不受程序的任何控制，在程序没有运行时也可以存在：`持久化对象` `流对象`。在流对象中，对象转化成字节流，通常被发送给另一台机器。在持久化对象中，对象被放在磁盘上，因此，即使程序终止，他们仍能保持自己的状态，这种存储方式的技巧在于：将对象转化为可以存放在其他媒介上的事物，在需要时，可以恢复成常规的、基于RAM的对象。JAVA提供了对轻量级持久化的支持。
-
-
-
-#### java中的数组
-
-> 创建一个数组对象时，初始化为null，即还没有指向某个对象。
 
 
 
@@ -294,7 +267,26 @@
 
 
 
-### 多态
+## 多态
+
+#### 重写
+
+> - 存在于继承体系中，指子类实现了一个与父类在方法声明上完全相同的方法
+>
+> - 需要满足里式替换原则：
+>
+> - > - 访问权限不能变小
+>   > - 返回类型不能扩大
+>   > - 异常类型
+
+
+#### 重载
+
+>- 代码美观
+>- 方便记忆
+>- 存在同一个类中，指一个方法与已经存在的方法名称上相同，但是参数类型/个数/顺序至少有一个不同
+>- 返回值不同，不一定是重载
+
 
 > ##### 引用的类型转换
 >
@@ -365,6 +357,125 @@ JAVA泛型只在编译时处理
 常用Java泛型类:
 
 ArrayList 视为变长数组
+
+
+
+## Object 方法
+
+### public `boolean equals()`  
+
+> ```java
+>     @Override
+>     public boolean equals(Object o) {
+>         if (this == o) return true;
+>         if (o == null || getClass() != o.getClass()) return false;
+> 
+>         EqualExample that = (EqualExample) o;
+> 
+>         if (x != that.x) return false;
+>         if (y != that.y) return false;
+>         return z == that.z;
+>     }
+> }
+> ```
+>
+> 等价包含相等
+>
+> 引用相等指二者指向同一个对象，若不是同一个对象，但是成员变量相同——等价
+
+
+
+### public native `int hashCode()`
+
+> - 返回哈希值，等价的两个对象散列值一定相同
+>
+> - 覆盖equals方法时应总是覆盖hashCode()方法
+>
+> - ```java
+>   @Override
+>   public int hashCode() {
+>       int result = 17;
+>       result = 31 * result + x;
+>       result = 31 * result + y;
+>       result = 31 * result + z;
+>       return result;
+>   }
+>   ```
+
+
+
+### public string toString()
+
+> 默认返回 ClassName@442142c的形式，@后数值为散列的无符号十六进制表示
+
+
+
+### protected native `Object clone()` throws CloneNotSupportedException
+
+> 一个类不显示重写clone()，其他类就不能直接调用该实例的clone()方法
+>
+> ```java
+> public class CloneExample {
+>     private int a;
+>     private int b;
+> 
+>     @Override
+>     public CloneExample clone() throws CloneNotSupportedException {
+>         return (CloneExample)super.clone();
+>     }
+> }
+> ```
+>
+> ```java
+> CloneExample e1 = new CloneExample();
+> try {
+>     CloneExample e2 = e1.clone();
+> } catch (CloneNotSupportedException e) {
+>     e.printStackTrace();
+> }
+> ```
+>
+> 如果没有实现Cloneable()接口，就会抛出异常
+>
+> #### 	浅拷贝
+>
+> > 拷贝对象和原始对象的引用同一个对象
+>
+> #### 深拷贝
+>
+> > 拷贝对象和原始对象的引用类型引用不同的对象
+>
+> **TIPS**：使用`clone()`方法来拷贝一个对象即复杂又有风险，会抛出异常还需要类型转换
+>
+> 可以使用拷贝构造函数或者拷贝工厂来拷贝一个对象
+>
+> 父类子类方法调用优先级：
+>
+> ```java
+> this.func(this)
+> super.func(this)
+> this.func(super)
+> super.func(super)
+> ```
+
+
+
+## 反射
+
+> 类在第一次使用时才动态加载到JVM中，也可以使用`Class.forName("com.mysql.jdbc.Driver")`这种方式来控制类的加载，该方法返回一个Class对象
+>
+> 反射可以提供运行时类信息，并且这个类可以在运行时才加载进来，甚至在编译时期该类的.class不存在也可以加载进来
+
+
+
+## 异常
+
+> Throwable可以用来表示任何可以作为异常抛出的类，分为两种`Error`和`Exception`
+>
+> 其中`Error`用来表示JVM无法处理的错误，`Exception`分为两种：
+>
+> - `受检异常`：需要运用try...catch..语句捕获并进行处理，并且可以从异常中恢复；
+> - `非受检异常`：是程序运行时错误，例如除0会引发`Arithmetic Exception`（算数异常），此时程序奔溃并且无法恢复
 
 
 
