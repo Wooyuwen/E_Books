@@ -7,7 +7,7 @@
 
 #### java的加载和运行
 
-> 编译：`.java`文件->多个 `.class`文件（字节码文件）[常量池？？静态常量池]
+> ###### 编译：`.java`文件->多个 `.class`文件（字节码文件）[常量池？？静态常量池]
 >
 > 运行：java.exe在DOS窗口使用
 >
@@ -312,7 +312,7 @@
 > 把需要实现的方法和共有常量定义在接口里：
 >
 > - 接口的变量默认为`public final static`（常量）
-> - 接口的方法默认为`public abstract`
+> - 接口的方法默认为`public abstract` (需要类来实现)
 >
 > 借口的定义：`default`和`public`两种类型：
 >
@@ -470,12 +470,185 @@ ArrayList 视为变长数组
 
 ## 异常
 
-> Throwable可以用来表示任何可以作为异常抛出的类，分为两种`Error`和`Exception`
->
-> 其中`Error`用来表示JVM无法处理的错误，`Exception`分为两种：
->
-> - `受检异常`：需要运用try...catch..语句捕获并进行处理，并且可以从异常中恢复；
-> - `非受检异常`：是程序运行时错误，例如除0会引发`Arithmetic Exception`（算数异常），此时程序奔溃并且无法恢复
+> java.lang.Throwable可以用来表示任何可以作为异常抛出的类，分为两种`Error`和`Exception`
 
 
+
+### Error （可以不检查）
+
+> 其中`Error`用来表示JVM无法处理的错误：脱离程序员控制的，例如栈溢出，编译时检查不到
+>
+> `VirtualMachineError`
+>
+> > `StackOverFlowError`
+> >
+> > `OutOfMemoryError`
+>
+> `AWTError`
+
+
+
+### Exception
+
+> > #### IOException（必须检查）
+> >
+> > - 文件找不到`FileNotFoundException`
+> > - 读写文件时发生I/O错误`EOFException`
+>
+> 
+>
+> > #### RuntimeException（可以不检查）
+> >
+> > - 网络连接失败
+> > - 参数非法
+> > - 空引用
+> > - 数组越界
+> > - 类未找到异常
+> > - 算数异常
+
+
+
+> `Exception`分为两种：
+>
+> - `受检异常`：提供机制，强制程序员写异常处理，需要运用try...catch..语句捕获并进行处理，并且可以从异常中恢复；                         (编译器会检查)
+> - `非受检异常`：提供机制，让程序员可以在发生异常后，进行处理，例如除0会引发`Arithmetic Exception`（算数异常），此时程序奔溃并且无法恢复             （编译器不会检查）
+>
+
+
+
+> `java`异常检测机制:
+>
+> > ##### 捕获异常:
+> >
+> > > try/catch/finally
+> >
+> > ##### 抛出异常
+> >
+> > > 方法可以不处理异常，而将异常抛出给调用者
+> > >
+> > > - 方法一：try/catch/finally
+> > > - 方法二：throws给调用者的调用者：直到main方法,main方法也能throws给谁
+> >
+> > ##### 自定义异常
+> >
+> > > 异常可以是java类也可以是自己定义的异常类
+> > >
+> > > ```java
+> > > void testException(integer i)throws MyException{
+> > >     if(i==null){
+> > >         MyException e=new MyException("Input i:null");
+> > >         throw e;
+> > >     }
+> > >     System.out.println("Input i: "+i);
+> > > }
+> > > ```
+> >
+> > ##### Java异常的捕捉
+> >
+> > > ```java
+> > > try{//可能会抛出异常的语句}
+> > > 
+> > > catch(XXException e){  //...}
+> > > 
+> > > catch(XXException e){  //...}
+> > >  
+> > > //多态特性：如果捕捉到子类的异常会进入父类的catch，因此父类的catch永远不能出现在子类前面
+> > > finally{ do sth;}//永远会执行
+> > >                  //finally语句块中抛出异常且未处理
+> > >                  //前面的代码使用了System.exit()语句
+> > >                  //程序所在线程死亡
+> > >                  //CPU出现异常被关闭
+> > > ```
+
+
+
+## JAVA 文件操作
+
+
+
+### Java File 类
+
+> `import java.io.File ;` 用来与操作系统交互,实现各种文件操作（删除，重命名等）
+>
+> 构造方法:  File file =new File(String pathName)
+>
+> > ##### 字节流：
+> >
+> > > `InputStream`
+> > >
+> > > ```java
+> > >         FileInputStream fin = new FileInputStream(srcFile);
+> > >         FileOutputStream fout = new FileOutputStream(destFile);
+> > >         byte[] bytes = new byte[1024];
+> > >         while (fin.read(bytes) != -1) {
+> > >             fout.write(bytes);
+> > >             fout.flush();
+> > >         }
+> > >         fin.close();
+> > >         fout.close();
+> > > ```
+> > >
+> > > `BufferedInputStream`
+> > >
+> > > ```java
+> > >         BufferedInputStream bis = new BufferedInputStream(new FileInputStream(srcFile));
+> > >         BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(destFile));
+> > >         byte[] bytes = new byte[16];
+> > >         int size = 0;
+> > >         while ((size = bis.read(bytes)) >= 0) {
+> > >             bos.write(bytes, 0, size);
+> > >             bos.flush();
+> > >         }
+> > >         bis.close();
+> > >         bos.close();
+> > > ```
+>
+> > ##### 字符流
+> >
+> > > 字节流转字符流，编码可指定，默认为平台默认字符码
+> > >
+> > > 构造方法：字节流，编码
+> > >
+> > > ```java
+> > >         InputStreamReader isr= new InputStreamReader(new FileInputStream(srcFile));
+> > >         OutputStreamWriter osw= new OutputStreamWriter (new FileOutputStream(destFile), "GBK");
+> > >         char[] bytes = new char[16];
+> > >         int size = 0;
+> > >         while ((size = isr.read(bytes)) >= 0) {
+> > >             osw.write(bytes, 0, size);
+> > >             osw.flush();
+> > >         }
+> > >         isr.close();
+> > >         osw.close();
+> > > ```
+> > >
+> > > `FileWriter/FileReader`
+> > >
+> > > ```java
+> > >         FileReader fr = new FileReader(srcFile);
+> > >         FileWriter fw = new FileWriter(destFile);
+> > >         char buf [] = new char [16];
+> > >         int len = 0;
+> > >         while((len = fr.read(buf)) >= 0 ){
+> > >             fw.write(buf, 0, len);
+> > >         }
+> > >         fr.close();
+> > >         fw.close();
+> > > ```
+> > >
+> > > `BufferedReader/BufferedWriter`：带缓冲的写法
+> > >
+> > > ```java
+> > >         BufferedReader bufReader = new BufferedReader(new InputStreamReader(new FileInputStream(srcFile)));
+> > >         BufferedWriter bufWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(destFile)));
+> > >         String input = null;
+> > >         while ((input = bufReader.readLine()) != null) {
+> > >             bufWriter.write(input);
+> > >             bufWriter.newLine();
+> > >         }
+> > >         bufReader.close();
+> > >         bufWriter.close();
+> > > ```
+> > >
+> > > 
 
