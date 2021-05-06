@@ -263,7 +263,6 @@
 > >           @override show()
 > >   }.show();
 > >   ```
-> >
 
 
 
@@ -512,7 +511,6 @@ ArrayList 视为变长数组
 >
 > - `受检异常`：提供机制，强制程序员写异常处理，需要运用try...catch..语句捕获并进行处理，并且可以从异常中恢复；                         (编译器会检查)
 > - `非受检异常`：提供机制，让程序员可以在发生异常后，进行处理，例如除0会引发`Arithmetic Exception`（算数异常），此时程序奔溃并且无法恢复             （编译器不会检查）
->
 
 
 
@@ -649,6 +647,83 @@ ArrayList 视为变长数组
 > > >         bufReader.close();
 > > >         bufWriter.close();
 > > > ```
-> > >
-> > > 
+
+
+
+## Date类
+
+> `import java.util.Date`
+>
+> `import java.text.SimpleDateFormat `
+>
+> ```java
+> Date date = new Date();//获取当前时间
+> 
+> long time = date.getTime();//获取从GMT 1970-01-01 00：00至今的毫秒数
+> 
+> SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss") //设置时间格式
+>     //HH代表24小时 hh代表12小时
+> 
+> String sysTime = df.format(date) //Date -> String
+> ```
+
+
+
+## Calendar类
+
+> `import java.util.Calendar;`
+>
+> `Calendar c = Calendar.getInstance();`：获取当前时间，静态方法？
+>
+> ```java
+> int year = c.get(Calendar.YEAR); 
+> int month = c.get(Calendar.MONTH);  
+> ```
+>
+> 
+>
+> ```java
+> Calendar c = Calendar.getInstance();
+> 
+> Date time = c.getTime();//Calendar -> Date
+> c.setTime(time);//Date -> Calendar
+> 
+> String str="2021-04-30";
+> SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+> Date date = sdf.parse(str);//字符串格式的时间转换为Date对象
+> 
+> 冷知识：
+> c.get(Calendar.MONTH);//注意这里Calendar的月份是按照0-11算的！！
+> ```
+
+
+
+## Timer 定时器
+
+> 使用场景：程序的周期性工作
+>
+> ```java
+> import java.util.Timer;
+> import java.util.TimerTask;
+> ```
+>
+> ```java
+>         Timer timer = new Timer();
+>         timer.schedule(new TimerTask(){
+>             @Override
+>             public void run() {
+>                  //todo:
+>             }
+>         },200,100);
+>     }
+> timer.cancel();
+> ```
+>
+> TimerTask为抽象类，需要实现run方法
+
+
+
+## Log 日志
+
+> 使用单例模式，注意并发
 
