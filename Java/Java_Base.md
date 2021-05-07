@@ -551,7 +551,7 @@ ArrayList 视为变长数组
 > > > catch(XXException e){  //...}
 > > >  
 > > > //多态特性：如果捕捉到子类的异常会进入父类的catch，因此父类的catch永远不能出现在子类前面
-> > > finally{ do sth;}//永远会执行
+> > > finally{ do sth;}//永远会执行，除非...
 > > >                  //finally语句块中抛出异常且未处理
 > > >                  //前面的代码使用了System.exit()语句
 > > >                  //程序所在线程死亡
