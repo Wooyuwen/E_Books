@@ -363,24 +363,32 @@ ArrayList 视为变长数组
 
 ### public `boolean equals()`  
 
+自反，对称，传递，一致
+
+Instanceof Cast，再比较关心的数据域
+
+
+
 > ```java
->     @Override
->     public boolean equals(Object o) {
->         if (this == o) return true;
->         if (o == null || getClass() != o.getClass()) return false;
+>  @Override
+>  public boolean equals(Object o) {
+>      if (this == o) return true;
+>      if (o == null || getClass() != o.getClass()) return false;
 > 
->         EqualExample that = (EqualExample) o;
+>      EqualExample that = (EqualExample) o;
 > 
->         if (x != that.x) return false;
->         if (y != that.y) return false;
->         return z == that.z;
->     }
+>      if (x != that.x) return false;
+>      if (y != that.y) return false;
+>      return z == that.z;
+>  }
 > }
 > ```
 >
 > 等价包含相等
 >
 > 引用相等指二者指向同一个对象，若不是同一个对象，但是成员变量相同——等价
+>
+> 覆盖equals方法实现自己的比较方法，需要记得覆盖hashCode方法，否则equals返回true，但是`hashCode`返回值不一样->会错误认为两个对象不一样
 
 
 
@@ -726,4 +734,157 @@ ArrayList 视为变长数组
 ## Log 日志
 
 > 使用单例模式，注意并发
+
+
+
+## 线程同步 
+
+> 根据变量同步
+>
+> > 加锁(synchronized)
+> >
+> > ```java
+> > Object a = new Object();
+> > synchronized(a){
+> >    //临界区
+> > }
+> > 
+> > ```
+> >
+> > 线程的执行过程:start -> run
+> >
+> > ```java
+> > class MyRunnable implements Runnable{
+> >    @OverRide
+> >    public void run(){
+> >       System.out.println("Hello World!");
+> >    }
+> > }
+> > 
+> > public static void main(String[] args){
+> >     Thread myThread new Thread(new MyRunnable());
+> >     myThread.start();
+> > }
+> > ```
+> >
+> > 用户线程+LWP的实现
+> >
+> > > - 线程管理在用户空间内完成
+> > > - 系统调用由LWP完成，降低进程被完全阻塞的风险
+> >
+> > 线程在Java的实现：
+> >
+> > > 在JDK1.2之前:Green Threads：由用户线程机制实现
+> > >
+> > > 目前无规定：Linux/Windows：LWP 1:1的机制实现
+> >
+> > 线程调度：
+> >
+> > > 协同式
+> > >
+> > > 抢占式
+> > >
+> > > > - 优先级
+> > > > - 时间片
+> > >
+> > > 操作系统调度函数：Round Robin,LSF,FIFO
+> >
+> > 线程的状态（JVM中有7中状态，不同于操作系统中的五种线程状态）
+> >
+> > > 初始态
+> > >
+> > > 就绪态
+> > >
+> > > 可运行态
+> > >
+> > > 阻塞态
+> > >
+> > > 无限期等待
+> > >
+> > > 有限等待
+> > >
+> > > 死亡态
+
+
+
+## 编译
+
+> java程序的编译、打包、运行
+>
+> 编译(编译器）:javac 命令 javac Test.java
+>
+> 打包： jar cvf Test.jar Test.class
+>
+> 运行(jvm)
+>
+> > java Test 
+> >
+> > java -cp Test.jar Test
+>
+> #### Jar包
+>
+> > 基于zip文件格式的文件压缩包
+> >
+> > 包配置：jar包可以包含一个META-INF目录，存放配置信息
+> >
+> > 其中包含MAINIFEST.MF文件
+> >
+> > 版本信息等
+
+
+
+## 集合类
+
+> 如何存储类的一组对象（的引用）
+>
+> 
+>
+> **Collection接口**(Set/List)：
+>
+> > 如何方便支持不同类型的类的对象集：
+> >
+> > > 如String对象集，Integer对象集
+> > >
+> > > 泛型接口：interface Collection <E>
+> >
+> > 支持的操作：
+> >
+> > > add,remove,contains,isempty,size...
+> > >
+> > > addAll：把另一个集合所有数据加进来
+> > >
+> > > toArray：转换为数组
+> > >
+> > > iterator：返回一个Iterator对象，用于遍历数据
+> >
+> > 基于index的次序管理
+>
+> 
+>
+> **Map接口**(HashMap/TreeMap)：
+>
+> > 管理键值对：每个值对应一个全局唯一的键
+> >
+> > 以空间换时间：通过键查找，可以比通过值查找快
+> >
+> > Map为泛型接口:interface Map<K,V>
+>
+> 
+>
+> #### **Collection/Set**
+>
+> - **HashSet**(Collection/Set/)：
+>
+> > 方便快速查找元素，基于HashMap实现，元素唯一性的实现：通过元素的两个方法`hashCode`  和`equals`完成，如果两个元素a和b的hashCode()返回值->判断a.equals(b)，实际上是判断引用是否一样
+>
+> - **TreeSet**(Collection/Set)：
+>
+> > 有序的Set，使用RB树来存储元素
+> >
+> > 大小关系：通过元素的compareTo方法来获得，因此元素需要实现Comparable接口
+>
+> #### Collection/List
+>
+> - ArrayList
+> - LinkedList
 
