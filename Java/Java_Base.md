@@ -361,7 +361,7 @@ ArrayList 视为变长数组
 
 ## Object 方法
 
-### public `boolean equals()`  
+#### public `boolean equals()`  
 
 自反，对称，传递，一致
 
@@ -392,7 +392,7 @@ Instanceof Cast，再比较关心的数据域
 
 
 
-### public native `int hashCode()`
+#### public native `int hashCode()`
 
 > - 返回哈希值，等价的两个对象散列值一定相同
 >
@@ -411,13 +411,13 @@ Instanceof Cast，再比较关心的数据域
 
 
 
-### public string toString()
+#### public string toString()
 
 > 默认返回 ClassName@442142c的形式，@后数值为散列的无符号十六进制表示
 
 
 
-### protected native `Object clone()` throws CloneNotSupportedException
+#### protected native `Object clone()` throws CloneNotSupportedException
 
 > 一个类不显示重写clone()，其他类就不能直接调用该实例的clone()方法
 >
@@ -472,6 +472,123 @@ Instanceof Cast，再比较关心的数据域
 > 类在第一次使用时才动态加载到JVM中，也可以使用`Class.forName("com.mysql.jdbc.Driver")`这种方式来控制类的加载，该方法返回一个Class对象
 >
 > 反射可以提供运行时类信息，并且这个类可以在运行时才加载进来，甚至在编译时期该类的.class不存在也可以加载进来
+>
+> **程序在运行时取得、甚至修改一个已知名称的类的内部信息**
+>
+> **程序在运行时加载、使用编译期间未知的类**：可加载一个运行时才知名称的类，获得其完整结构
+>
+> 
+>
+> Java类：代码里面的类
+> 
+> Class类：一种Object，当一个类被加载，JVM便自动产生一个Class对象
+>
+> ```java
+>Class myClass = Test.class;
+> 
+>Test test = new Test();
+> Class myClass = test.getClass();
+>```
+> 
+> Class类可以获取对应class的信息：
+> 
+> > myclass.getPackage()/getSuperClass()
+> >
+> > myclass.getFields()/getMethods/getModifiers
+>>
+> > 通过返回的信息，可以：
+>>
+> > > - 构造类的对象
+> > > - 修改域和对象的访问控制权限
+> > > - 修改域的数值
+> > > - 调用相应的方法
+
+
+
+## instanceof 关键字
+
+> 布尔计算(boolean)
+>
+> Object instanceof Class
+>
+> a instanceof B
+>
+> > 判断a是不是B这个类或者接口的实例
+> >
+> > 返回true
+> >
+> > > 如果B是对应的类a=new B();
+> > >
+> > > 或者，是a对应的类的父类
+> > >
+> > > 或者，是a对应的类实现的接口
+
+
+
+## GC
+
+> GC的时候，所有线程都暂停，直到GC结束
+
+
+
+> #### 引用计数法、可达性分析
+>
+> > 引用计数器：记录对象的引用数量
+> >
+> > 规则：计数器为0时可回收，但是难以解决循环依赖
+>
+> 
+>
+> > 可达性分析：通过构造引用链，侦测没有依赖的对象
+> >
+> > 当一个对象到GC Root没有路径时，可回收
+> >
+> > GC Root：正在运行的程序可访问的引用变量
+> >
+> > - 虚拟机栈（局部变量）中的对象引用
+> > - 本地方法栈中native方法的对象引用
+> > - 方法区中类的静态属性的对象引用
+> > - 方法区中常量的对象引用
+>
+> 
+>
+> #### 如何进行内存回收
+>
+> 标记清除算法：从root出发，标记存活的对象，未标记的对象清除，问题：内存空间不连续
+>
+> 标记整理算法：标记完后，整理存货对象；特点：拷贝整理太慢，整理之后内存连续
+>
+> 复制算法：适合存活率低场景
+>
+> 分代算法：
+>
+> 垃圾回收器：虚拟机对垃圾回收算法的实现/yt
+
+
+
+## 配置文件读写
+
+> 配置文件：定义软件系统动态加载的配置
+>
+> 
+>
+> > 环境设置：如程序需要访问的远程数据库地址/端口
+> >
+> > 用户特定的设置
+>
+> 常见扩展名：.conf .ini .cfg .properties
+>
+> 文件格式：文本文件
+>
+> > 每行为Key=Value格式
+>
+> xml格式的配置文件
+>
+> 
+>
+> **使用Properties类**
+>
+> - import java.util.Properties
 
 
 
@@ -479,9 +596,7 @@ Instanceof Cast，再比较关心的数据域
 
 > java.lang.Throwable可以用来表示任何可以作为异常抛出的类，分为两种`Error`和`Exception`
 
-
-
-### Error （可以不检查）
+#### Error （可以不检查）
 
 > 其中`Error`用来表示JVM无法处理的错误：脱离程序员控制的，例如栈溢出，编译时检查不到
 >
@@ -495,7 +610,7 @@ Instanceof Cast，再比较关心的数据域
 
 
 
-### Exception
+#### Exception
 
 > > #### IOException（必须检查）
 > >
@@ -572,7 +687,7 @@ Instanceof Cast，再比较关心的数据域
 
 
 
-### Java File 类
+#### Java File 类
 
 > `import java.io.File ;` 用来与操作系统交互,实现各种文件操作（删除，重命名等）
 >

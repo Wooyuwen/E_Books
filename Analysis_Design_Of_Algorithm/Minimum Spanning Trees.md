@@ -8,7 +8,7 @@
 
 > #### Kruskal's algorithm
 
-运用引理23.2
+`运用引理23.2`
 
 > #### Prim's algorithm
 
