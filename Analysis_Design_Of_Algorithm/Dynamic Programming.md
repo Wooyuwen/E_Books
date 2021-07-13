@@ -35,13 +35,12 @@
 >      print ")"
 > ```
 >
-> 
 
 
 
 #### 15.3 Elements of Dynamic Programming
 
-> ##### Optimal SUbstructures
+> ##### Optimal Substructures
 >
 > > characterize the optimal substructures
 >

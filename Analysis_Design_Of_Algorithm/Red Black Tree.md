@@ -68,7 +68,6 @@
 >       else(same as)
 > T.root.color=BLACK
 > ```
->
 
 
 ## 13.4 Deletion

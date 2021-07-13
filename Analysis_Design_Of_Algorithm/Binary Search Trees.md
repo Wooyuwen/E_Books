@@ -22,5 +22,12 @@
 
 ### Randomly built binary search trees
 > **Theorem 12.4** The expected height of a randomly built binary search tree on n distinct keys is `O(lgn)`
-> 
+
+
+
+TIPS：
+
+堆：Build_Max_Heap时间复杂度为O(n)，为什么不是nlgn呢？ Max_Heapify：要求左右子树都为最大堆~
+
+优先级队列：最大优先级队列:插入，返回最大值，提取最大值，更新键值。
 

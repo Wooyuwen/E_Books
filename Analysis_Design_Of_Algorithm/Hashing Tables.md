@@ -28,12 +28,13 @@
 
 > each table contains either an element of the dynamic set or NIL.
 > fewer collisions and faster retrieval.
-> 查找一个元素可以按照该元素插入的顺序，遇到NIL即可停止，这也要求DEL时要设置被删slot为deleted状态。
+> 查找一个元素可以按照该元素插入的顺序，遇到NIL即可停止，这也要求DEL时要设置被删slot为deleted状态。当需要经常删除表中元素时，选择chaining
 
 ###### Uniform Hashing 一致散列
 > the probe sequence of each key is equally likely to be any of the m! permutations of <0,1,..,m-1>.
 > `<h(k,0),h(k,1),...,h(k,m-1)>` is a permutation of `<0,1,...,m-1>`.
 > three method :
+>
 > > Linear probing
 > > Quadratic probing
 > > **Double hashing**  :`h(k,i)=(h1(k) + ih2(k))modm` both `h1` and `h2` are auxiliary hash functions 
@@ -41,5 +42,4 @@
 > > **一致散列哈希** 
 > >
 > > > upper bound 不成功查找:`1/(1-α)` 成功查找:`1/αln(1/(1-α))`
-
 
