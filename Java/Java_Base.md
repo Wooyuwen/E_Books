@@ -49,13 +49,12 @@
 > >   }
 > >   ```
 > >
-> >   
-> >
 > > - 静态变量并没有像c++的作用域，作用域的限制只能通过private/public/protected来修饰。
-> >
 > > - **静态方法和静态变量都可以通过对象访问,因为静态方法不依赖具体实例，所以必须实现。**
 >
-> > **`synchronized`**:（**方法**）
+> **transient**:反序列化，对应对象只存于内存而不会存于磁盘中，如银行卡号等贵重东西
+>
+> > **`synchronized`**: **方法**
 > >
 > > - 同一时间只能被一个线程访问，可以搭配四个访问修饰符使用。
 >
@@ -1001,12 +1000,8 @@ Instanceof Cast，再比较关心的数据域
 
 ## 集合类
 
-> 如何存储类的一组对象（的引用）
->
-> 
->
-> **Collection接口**(Set/List)：
->
+##### **Collection接口**(Set/List)：
+
 > > 如何方便支持不同类型的类的对象集：
 > >
 > > > 如String对象集，Integer对象集
@@ -1025,10 +1020,11 @@ Instanceof Cast，再比较关心的数据域
 > >
 > > 基于index的次序管理
 >
-> 
->
-> **Map接口**(HashMap/TreeMap)：
->
+
+
+
+##### **Map接口**(HashMap/TreeMap)：
+
 > > 管理键值对：每个值对应一个全局唯一的键
 > >
 > > 以空间换时间：通过键查找，可以比通过值查找快
@@ -1045,8 +1041,11 @@ Instanceof Cast，再比较关心的数据域
 > > >
 > > > 不过都实现了Map,Clonable,Serializable这三个接口
 >
-> HashMap的底层实现原理：
->
+
+
+
+##### HashMap的底层实现原理：
+
 > > Hash值的计算：
 > >
 > > Hash值=（hashcode）^(hashcode >>> 16)
@@ -1065,28 +1064,59 @@ Instanceof Cast，再比较关心的数据域
 >
 > **get**:计算hashcode，然后定位到具体的桶中
 >
-> jdk1.8:红黑树效率提高到logn
+> 
+>
+> jdk1.8:红黑树效率提高到logn,HashEntry 改为 Node
 >
 > 
 >
-> 并发问题： HashMap 扩容的时候会调用 `resize()` 方法，就是这里的并发操作容易在一个桶上形成环形链表；这样当获取一个不存在的 key 时，计算出的 index 正好是环形链表的下标就会出现死循环。
-
-
-
-> #### **Collection/Set**
+> 遍历方式：
 >
+> > EntrySet：高效
+> >
+> > KeySet：低效
+>
+> 
+>
+> **并发问题**： HashMap 扩容的时候会调用 `resize()` 方法，就是这里的并发操作容易在一个桶上形成环形链表；这样当获取一个不存在的 key 时，计算出的 index 正好是环形链表的下标就会出现死循环。
+
+
+
+##### ConcurrentHashMap
+
+> jdk1.7
+>
+> > Segment+HashEntry(value和链表是由volatile修饰的)
+> >
+> > 但是volatile不能保证操作的原子性，Put操作还是需要加锁（以Segment为单位）
+> >
+> > get由于可见性则不需要加锁
+>
+> jdk1.8
+>
+> > 其中抛弃了原有的 Segment 分段锁，而采用了 `CAS + synchronized` 来保证并发安全性。
+
+
+
+##### **Collection/Set**
+
 > - **HashSet**(Collection/Set/)：
 >
+> > 通过hashCode值来确定元素在内存中的位置
+> >
 > > 方便快速查找元素，基于HashMap实现，元素唯一性的实现：通过元素的两个方法`hashCode`  和`equals`完成，如果两个元素a和b的hashCode()返回值->判断a.equals(b)，实际上是判断引用是否一样
 >
 > - **TreeSet**(Collection/Set)：
 >
 > > 有序的Set，使用RB树来存储元素
-> >
+>
 > > 大小关系：通过元素的compareTo方法来获得，因此元素需要实现Comparable接口
 >
-> #### Collection/List、
->
+
+
+
+##### Collection/List
+
 > - ArrayList 能自动增长容量的数组 toArray：返回数组 asList：返回列表
 > - LinkedList 双链表：
 
