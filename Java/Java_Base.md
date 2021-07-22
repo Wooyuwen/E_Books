@@ -1037,6 +1037,42 @@ Instanceof Cast，再比较关心的数据域
 >
 > 
 >
+> HashMap（线程不安全）和HashTable的区别：
+>
+> > > HashMap继承自AbstractMap类
+> > >
+> > > HashTable继承自Dictionary类
+> > >
+> > > 不过都实现了Map,Clonable,Serializable这三个接口
+>
+> HashMap的底层实现原理：
+>
+> > Hash值的计算：
+> >
+> > Hash值=（hashcode）^(hashcode >>> 16)
+> >
+> > 数组下标:**hash&(16-1) = hash%16**
+> >
+> > Hash冲突：单线链表到达一定长度后效率会很低，jdk1.8后，加入了红黑树，单线表到达一定长度后会变成一个红黑树(单线表长度>8,数组长度>64，若不大于64，则需要扩容)
+> >
+> > 底层扩容原理：
+> >
+> > > 数组长度变成2倍0.75
+> > >
+> > > 触发条件：负载因子>0.75
+>
+> **put**: 判断数组是否需要初始化，Key为空？计算hashcode，定位桶，如果是单链表则需要判断hashcode,key是否与传入的key相同并覆盖，如若为空，则创建一个Entry对象写入当前位置-->addEntry判断是否需要扩容，将所有key重新hash
+>
+> **get**:计算hashcode，然后定位到具体的桶中
+>
+> jdk1.8:红黑树效率提高到logn
+>
+> 
+>
+> 并发问题： HashMap 扩容的时候会调用 `resize()` 方法，就是这里的并发操作容易在一个桶上形成环形链表；这样当获取一个不存在的 key 时，计算出的 index 正好是环形链表的下标就会出现死循环。
+
+
+
 > #### **Collection/Set**
 >
 > - **HashSet**(Collection/Set/)：
@@ -1051,6 +1087,22 @@ Instanceof Cast，再比较关心的数据域
 >
 > #### Collection/List、
 >
-> - ArrayList
-> - LinkedList
+> - ArrayList 能自动增长容量的数组 toArray：返回数组 asList：返回列表
+> - LinkedList 双链表：
+
+
+
+## 数组
+
+> 数组也是对象
+>
+> 特性：如果有两个类A和B，如果B继承（extends）了A，那么A[]类型的引用就可以指向B[]类型的对象
+>
+> ```java
+>  String[][] ss = new String[2][3];
+>         System.out.println(ss.getClass().getName());
+>         //打印出的数组类的名字为    [[Ljava.lang.String;
+> ```
+>
+> [[代表维度
 
