@@ -187,3 +187,100 @@
 
 > 大数据处理的新规。
 
+
+
+## MySql
+
+> port:3306
+>
+> 配置文件：/etc/my.cnf
+>
+> service mysqld start
+>
+> mysql -u root -p
+>
+> 12315
+>
+> quit
+>
+> service mysqld stop
+
+
+
+## Redis
+
+> port:6379
+>
+> 配置文件：/etc/redis/6379.conf
+>
+> systemctl restart redis_6379.service
+>
+> systemctl status redis_6379.service：查看redis服务状态
+>
+> redis-cli：启动客户端
+>
+> auth 12315
+>
+> shutdown：关闭了redis服务
+>
+> #### 跳跃表：Sorted-set
+>
+> > 删除插入查找logn，空间2n
+> >
+> > 删除：
+> >
+> > > 1. 自上而下，查找第一次出现节点的索引，并逐层找到每一层对应的节点。O（logN）
+> > > 2. 删除每一层查找到的节点，如果该层只剩下1个节点，删除整个一层（原链表除外）。O（logN）
+> >
+> > 插入：
+> >
+> > > 1. 新节点和各层索引节点逐一比较，确定原链表的插入位置。O（logN）
+> > > 2. 把索引插入到原链表。O（1）
+> > > 3. 利用抛硬币的随机方式，决定新节点是否提升为上一级索引。结果为“正”则提升并继续抛硬币，结果为“负”则停止。O（logN）
+>
+> #### 持久化
+>
+> > RDB快照和AOF日志，Memcached不支持持久化
+>
+> #### 分布式
+>
+> > Memcached不支持分布式，只能在客户端使用一致哈希来实现分布式存储
+> >
+> > Redis Cluster实现了分布式支持
+>
+> #### 内存管理
+>
+> > 长期不用的数据会被交换到磁盘，M不会
+> >
+> > M内存分段，解决内存碎片但是利用率下降
+>
+> #### 数据淘汰策略
+>
+> > volatitle-lru/ttl/random：已设置过期时间的数据集
+> >
+> > allkeys-lru/ttl/random：所有数据集
+
+
+
+## Nginx
+
+> port:80
+>
+> 配置文件：/usr/local/nginx/conf/nginx.conf
+>
+> nginx
+>
+> nginx -s stop
+>
+> nginx -s reload：修改配置文件后可刷新
+
+
+
+## TOMCAT
+
+> port:8080
+>
+> service tomcat start 
+>
+> service tomcat stop
+
