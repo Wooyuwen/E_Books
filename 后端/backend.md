@@ -284,3 +284,10 @@
 >
 > service tomcat stop
 
+
+
+## RabbitMQ
+
+> port:15672
+>
+> systemctl start rabbitmq-server.service
