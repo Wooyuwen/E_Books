@@ -1,0 +1,26 @@
+G:\For Study\College Second\do数据库引论\SQL\实验中期\library\library\obj\Debug\library.csprojAssemblyReference.cache
+G:\For Study\College Second\do数据库引论\SQL\实验中期\library\library\obj\Debug\library.Properties.Resources.resources
+G:\For Study\College Second\do数据库引论\SQL\实验中期\library\library\obj\Debug\library.csproj.GenerateResource.cache
+G:\For Study\College Second\do数据库引论\SQL\实验中期\library\library\obj\Debug\library.csproj.CoreCompileInputs.cache
+G:\For Study\College Second\do数据库引论\SQL\实验中期\library\library\bin\Debug\library.exe.config
+G:\For Study\College Second\do数据库引论\SQL\实验中期\library\library\bin\Debug\library.exe
+G:\For Study\College Second\do数据库引论\SQL\实验中期\library\library\bin\Debug\library.pdb
+G:\For Study\College Second\do数据库引论\SQL\实验中期\library\library\obj\Debug\library.exe
+G:\For Study\College Second\do数据库引论\SQL\实验中期\library\library\obj\Debug\library.pdb
+G:\For Study\College Second\do数据库引论\SQL\实验中期\library\library\obj\Debug\library.MyLibrary.resources
+G:\For Study\College Second\do数据库引论\SQL\实验中期\library\library\obj\Debug\library.Login.resources
+G:\For Study\College Second\do数据库引论\SQL\实验中期\library\library\obj\Debug\library.account.resources
+G:\For Study\College Second\do数据库引论\SQL\实验中期\library\library\obj\Debug\library.staff_manage.resources
+C:\Users\Administrator\Desktop\mid\library\library\bin\Debug\library.exe.config
+C:\Users\Administrator\Desktop\mid\library\library\bin\Debug\library.exe
+C:\Users\Administrator\Desktop\mid\library\library\bin\Debug\library.pdb
+C:\Users\Administrator\Desktop\mid\library\library\obj\Debug\library.account.resources
+C:\Users\Administrator\Desktop\mid\library\library\obj\Debug\library.Login.resources
+C:\Users\Administrator\Desktop\mid\library\library\obj\Debug\library.Properties.Resources.resources
+C:\Users\Administrator\Desktop\mid\library\library\obj\Debug\library.staff_manage.resources
+C:\Users\Administrator\Desktop\mid\library\library\obj\Debug\library.csproj.GenerateResource.cache
+C:\Users\Administrator\Desktop\mid\library\library\obj\Debug\library.csproj.CoreCompileInputs.cache
+C:\Users\Administrator\Desktop\mid\library\library\obj\Debug\library.exe
+C:\Users\Administrator\Desktop\mid\library\library\obj\Debug\library.pdb
+C:\Users\Administrator\Desktop\mid\library\library\obj\Debug\library.Library.resources
+C:\Users\Administrator\Desktop\mid\library\library\obj\Debug\library.csprojAssemblyReference.cache
