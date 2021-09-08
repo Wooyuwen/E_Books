@@ -148,3 +148,21 @@
 
  
 
+### JVM参数
+
+> - 堆栈配置
+>
+> -Xmx:最大堆
+>
+> -Xms:堆初始大小
+>
+> -Xmn:年轻代大小
+>
+> -Xss:每个线程堆栈大小
+>
+> -XX:NewRatio=4：设置年轻代和老年代比值
+>
+> -XX:SurvivorRatio=4:设置年轻代Eden区与Survivor区的大小比值
+>
+> -XX：MaxTenuringThreshold=0:设置垃圾最大年龄，设置为0直接进入老年代
+
