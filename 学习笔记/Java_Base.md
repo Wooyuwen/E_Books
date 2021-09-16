@@ -1,4 +1,4 @@
-# Java__BaseConcepts
+#  Java__BaseConcepts
 
 > - JRE: java运行环境，为`Java`的运行提供了所需的环境。它是一个JVM程序，主要包括了JVM的标准实现和一些`Java`基本类库
 > - JDK:`Java`开发工具包，提供了`Java`的开发以及运行环境
@@ -29,6 +29,8 @@
 > #### 修饰符关键字
 >
 > > ##### `final`: （类，方法，变量）
+> >
+> > - 初始化：定义时或者静态代码块
 > >
 > > - 类  ：不能继承，类中的成员变量可以设计为final，final中的成员方法会被隐式指定为final方法。
 > > - 方法：不能被重写，一个类的private方法会被隐式的指定为final方法。
@@ -112,6 +114,13 @@
 > String作为参数按值传递
 >
 > 常量池：JVM在堆中分配的一块空间，用来存储显式的数据
+>
+> 为什么设计为不可变：
+>
+> - 便于实现字符串池
+> - 使用多线程安全
+> - 避免安全问题（网络连接和数据库连接中字符串常作为参数）
+> - 加快字符串处理速度：保证了hashcode的唯一性，创建对象时其hashcode可以直接缓存，如Map喜欢将String作为Key的原因
 
 
 
@@ -334,6 +343,8 @@
 >
 > java 1.8允许接口实现方法 `default`
 >
+> **invokedynamic**：lambda表达式：函数接口：只有一个抽象函数的接口，可省略接口名，方法名甚至是变量类型（java强类型推断）
+>
 > 接口可以extends其他接口，一个类可以实现多个接口
 >
 > 接口的私有方法：方便接口内复用
@@ -448,7 +459,7 @@ Instanceof Cast，再比较关心的数据域
 >     private int b;
 > 
 >     @Override
->     public CloneExample clone() throws CloneNotSupportedException {
+>     public CloneExample clone() throws 		    CloneNotSupportedException {
 >         return (CloneExample)super.clone();
 >     }
 > }
