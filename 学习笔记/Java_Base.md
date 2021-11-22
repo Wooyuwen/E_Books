@@ -1,37 +1,11 @@
-#  Java__BaseConcepts
+## 基本概念
 
-> - JRE: java运行环境，为`Java`的运行提供了所需的环境。它是一个JVM程序，主要包括了JVM的标准实现和一些`Java`基本类库
-> - JDK:`Java`开发工具包，提供了`Java`的开发以及运行环境
+#### 修饰符、关键字
 
-#### java的加载和运行
-
-> ###### 编译：`.java`文件->多个 `.class`文件（字节码文件）[常量池？？静态常量池]
->
-> 运行：java.exe在DOS窗口使用
->
-> - 启动JVM
-> - JVM启动类装载器`ClassLoader`
-> - `ClassLoader`会去硬盘上搜索`.class`文件
-> - JVM将字节码文件 **解释** 成二进制文件并运行。
->
-> `classpath`：能让ClassLoader去指定路径下载字节码文件，在用户环境变量中设置
-
-
-
-#### 标识符、关键字、字面值（数据）
-
-> 驼峰命名法
->
-> 标识符只能由：`数字`   `字母` `下划线` `$` 组成
->
-> 字面值：整数型、浮点型、布尔型、字符串型、字符型
->
-> #### 修饰符关键字
->
 > > ##### `final`: （类，方法，变量）
-> >
+>
 > > - 初始化：定义时或者静态代码块
-> >
+>
 > > - 类  ：不能继承，类中的成员变量可以设计为final，final中的成员方法会被隐式指定为final方法。
 > > - 方法：不能被重写，一个类的private方法会被隐式的指定为final方法。
 > > - 成员变量：必须要附初始值（`直接赋值` `全部在构造方法中赋值`），只能初始化一次。**如果修饰的是引用类型，则说明引用的地址的值不能修改，但是引用的对象的值可变**。
@@ -50,36 +24,54 @@
 > >   ```
 > >
 > > - 静态变量并没有像c++的作用域，作用域的限制只能通过private/public/protected来修饰。
+> >
 > > - **静态方法和静态变量都可以通过对象访问,因为静态方法不依赖具体实例，所以必须实现。**
 >
-> **transient**:反序列化，对应对象只存于内存而不会存于磁盘中，如银行卡号等贵重东西
+
+
+
+**序列化/反序列化**：
+
+> - **序列化**： 将数据结构或对象转换成二进制字节流的过程
+> - **反序列化**：将在序列化过程中所生成的二进制字节流转换成数据结构或者对象的过程
 >
-> > **`synchronized`**: **方法**
-> >
+
+
+
+**transient**:反序列化，对应对象只存于内存而不会存于磁盘中，如银行卡号等贵重东西
+
+> - `transient` 只能修饰变量，不能修饰类和方法。
+> - `transient` 修饰的变量，在反序列化后变量值将会被置成类型的默认值。例如，如果是修饰 `int` 类型，那么反序列后结果就是 `0`。
+> - `static` 变量因为不属于任何对象(Object)，所以无论有没有 `transient` 关键字修饰，均不会被序列化。
+
+
+
+> `synchronized`**: **方法
+>
 > > - 同一时间只能被一个线程访问，可以搭配四个访问修饰符使用。
 >
-> > **`volatile`**：（**成员变量**）
-> >
+> `volatile`**：（**成员变量）
+>
 > > - 所修饰的成员变量每次被线程访问时，都强制从共享内存中重新读取该成员变量的值；
 > > - 当成员变化时，会强制线程将变化后的值写回内存。
 >
-> > ###### **` protected`**:
-> >
+> ` protected`:
+>
 > > - 和private一样不能修饰类，同一包内所有类都可以访问，但是不同包只能通过继承，而且只能调用继承的方法，而不能使用父类实例的`protected`方法。
 > >
 > > 访问控制：
 > >
 > > - 父类方法声明为public，子类public
-> > - 父类protected方法，子类public 或protected
+> >- 父类protected方法，子类public 或protected
 > > - 父类private方法，子类.................子类没有XD
 
 
 
 
 
-####  变量、数据类型、精度损失
+####  基本数据类型
 
-> `boolean `不确定大小
+> `boolean `不确定大小，编译后会使用其他数据类型来表示，将布尔值编译为Java虚拟机int数据类型的值：32位CPU一次处理数据是32位。Boolean数组会编译位Byte数组
 >
 > `byte 8`
 >
@@ -101,15 +93,97 @@
 >
 > 计算机中的数据都是由补码形式存储的
 >
-> 整数字面值没有超出byte,short,char的取值范围时可以直接复制该字面值，方便程序员的编程
+> 除了Double和float都实现了常量池
 
 
 
-### String
+#### ThreadLocal
+
+> 关于创建线程局部变量的类
+>
+> 目的是为了解决多线程访问资源时的共享问题
+>
+> ```java
+> public void set(T value) {
+>  Thread t = Thread.currentThread();
+>  ThreadLocalMap map = getMap(t);
+>  if (map != null)
+>      map.set(this, value);
+>  else
+>      createMap(t, value);
+> }
+> ```
+>
+> ```java
+> ThreadLocalMap getMap(Thread t) {
+>  return t.threadLocals;
+> }
+> ```
+>
+> ```java
+> class Thread implements Runnable {
+>  /* ThreadLocal values pertaining to this thread. This map is maintained
+>      * by the ThreadLocal class. */
+> 
+>     ThreadLocal.ThreadLocalMap threadLocals = null;
+> }
+> ```
+>
+> ```java
+> public T get() {
+>   Thread t = Thread.currentThread();
+>   ThreadLocalMap map = getMap(t);
+>   if (map != null) {
+>     ThreadLocalMap.Entry e = map.getEntry(this);
+>     if (e != null) {
+>       @SuppressWarnings("unchecked")
+>       T result = (T)e.value;
+>       return result;
+>     }
+>   }
+>   return setInitialValue();
+> }
+> ```
+>
+> 
+>
+> ThreadLocalMap：当前Thread对象的threadLocals变量，即实际上ThreadLocal的值是放入了当前线程的一个ThreadLocalMap实例中，所以只能在本线程访问
+>
+> ThreadLocalMap对应Entry类型：
+>
+> ```java
+> static class Entry extends WeakReference<ThreadLocal<?>> {
+>   /** The value associated with this ThreadLocal. */
+>   Object value;
+> 
+>   Entry(ThreadLocal<?> k, Object v) {
+>     super(k);
+>     value= v;
+>   }
+> }
+> ```
+>
+> 
+>
+> 对象存放在堆上，实例创建的类持有，值线程持有
+>
+> 如何被其他线程访问：InheritableThreadLocal：将某个线程的ThreadLocal值在其子线程创建时传递过去
+
+
+
+#### String/StringBuilder/StringBuffer
 
 > 创建之后不能修改存在内存中的值（hashcode
 >
 > StringBuffer/StringBuilder
+>
+> `StringBuilder`和`StringBuffer`都继承自`AbstractStringBuilder`类，在ASB中也使用字符数组保存字符串，但是没用final修饰，StringBuilder和StringBuffer都是调用父类构造方法实现的，字符串操作也是父类定义的方法如expandCapacity、append、insert、indexOf等公共方法
+>
+> **应用场景**：
+>
+> - String：常量声明
+> - 频繁进行字符串的运算并运行在多线程下，如XML解析、HTTP参数解析与封装
+> - 频繁进行字符串解析并单线程运行，如SQL语句拼装，JSON封装等
 >
 > String作为参数按值传递
 >
@@ -124,17 +198,7 @@
 
 
 
-#### 三元运算符
-
-> 布尔表达式?表达式1：表达式2
-
-
-
-***
-
-
-
-####  运行时内存分析
+####  JVM内存结构
 
 > 共用：
 >
@@ -150,22 +214,11 @@
 > >
 > > - `本地方法栈`和虚拟机栈类似，区别：`JNI` `（Java Native Interface）`和本地C代码交互的API
 > >
-> >   
-> >   
-> >   `native`:用作java和其他语言进行协同作用，通知操作系统，该函数由操作系统实现
->
-> java完全采用动态内存分配方式，每创建新对象都使用new关键字来构建此对象的动态实例。
+> 
 
 
 
-
-****
-
-
-
-
-
-# 面向对象（封装、继承、多态）
+## 面向对象
 
 
 > - `this `
@@ -224,7 +277,7 @@
 
 > - 抽象类不能被实例化
 > - 抽象类中不一定含有抽象方法，但是抽象方法一定属于抽象类
-> - 抽象类中的抽象方法只是声明，不包含方法体
+> - 抽象类中的抽象方法只是声明，不包含方法体（jdk1.8有默认实现）
 > - 构造方法和类方法（用static修饰的方法）不能声明为抽象方法
 
 
@@ -247,7 +300,7 @@
 
 #### 内部类
 
-> **`普通内部类`**:（需要外部类实例）
+> `普通内部类`:（需要外部类实例）
 >
 > > - 内部类可使用外部类的变量和方法
 > > - 外部类可以创建内部类实例
@@ -255,31 +308,31 @@
 > > - 需要外部类**实例**创建内部类对象 
 > > - `不能定义静态变量、能定义常量`
 >
-> **`静态内部类`**(用static修饰)
+> `静态内部类`(用static修饰)
 >
 > > - 只能访问外部类的static方法和变量
 > > - 可以直接创建，不需要外部类引用
 >
-> **`局部内部类`**
+> `局部内部类`
 >
 > > - 定义在程序块中，只在块内有效；块外不能创建和引用
 > > - 只能用abstract和final修饰
 > > - 可以访问外部类成员
 > > - 可访问块中的final局部变量
 >
-> **`匿名内部类`**
+> `匿名内部类`
 >
 > > - 没有引用名的对象
 > > - 所有变量都是final类型
 > >
 > > ```java
-> > new Test().show();
+> >new Test().show();
 > > ```
-> >
+> > 
 > > - 匿名类：继承父类或者实现接口
 > >
 > >   ```java
-> >   new Test(){
+> >    new Test(){
 > >           @override show()
 > >   }.show();
 > >   ```
@@ -372,6 +425,8 @@
 > 模板可为类：可限定类型必须是某个指定类型或者子类，或是实现了某个接口，够用extends
 >
 > **静态方法不能使用类的泛型**（泛型类作为参数）因为泛型的确定需要类实例化
+>
+> <?>：限定泛型的范围，提高代码可读性：程序员能只读功能
 
 
 
@@ -455,22 +510,23 @@ Instanceof Cast，再比较关心的数据域
 >
 > ```java
 > public class CloneExample {
->     private int a;
->     private int b;
+>  private int a;
+>  private int b;
 > 
->     @Override
->     public CloneExample clone() throws 		    CloneNotSupportedException {
->         return (CloneExample)super.clone();
->     }
+>  @Override
+>  public CloneExample clone() throws 		    CloneNotSupportedException {
+>      return (CloneExample)super.clone();
+>  }
 > }
 > ```
 >
 > ```java
 > CloneExample e1 = new CloneExample();
 > try {
->     CloneExample e2 = e1.clone();
+>  CloneExample e2 = e1.clone();
 > } catch (CloneNotSupportedException e) {
->     e.printStackTrace();
+>  e.printStackTrace();
+>     
 > }
 > ```
 >
@@ -563,21 +619,40 @@ Instanceof Cast，再比较关心的数据域
 
 栈上分配：Java的对象一般都是分配在堆内存中的，而JVM开启了栈上分配后，允许把线程私有的对象（其它线程访问不到的对象）打散分配在栈上。这些分配在栈上的对象在方法调用结束后即自行销毁，不需要JVM触发垃圾回收器来回收，因此提升了JVM的性能。
 
-> #### 引用计数法、可达性分析
->
-> > 引用计数器：记录对象的引用数量
+
+
+#### 四种引用
+
+> > - **强引用**：存在强引用就不会回收对象实例，JVM结束后回收
 > >
-> > 规则：计数器为0时可回收，但是难以解决循环依赖
->
-> JDK1.2之后,分四种引用类型
->
-> > - 强引用：JVM结束后回收
-> > - 软引用：内存不足时回收，常用来实现内存敏感缓存
-> > - 弱引用：GC回收
-> > - 虚引用：...
->
-> > 可达性分析：通过构造引用链，侦测没有依赖的对象
+> > - **软引用**：内存不足时回收，常用来实现内存敏感缓存，软引用可以和一个引用队列(ReferenceQueue)联合使用。如果软引用所引用对象被垃圾回收，JAVA虚拟机就会把这个软引用加入到与之关联的引用队列中
 > >
+> >   ```java
+> >       ReferenceQueue<String> referenceQueue = new ReferenceQueue<>();
+> >       String str = new String("abc");
+> >       SoftReference<String> softReference = new SoftReference<>(str, referenceQueue);
+> >               
+> >       str = null;
+> >       // Notify GC
+> >       System.gc();
+> >               
+> >       System.out.println(softReference.get()); // abc
+> >               
+> >       Reference<? extends String> reference = referenceQueue.poll();
+> >       System.out.println(reference); //null
+> >   ```
+> >
+> >   
+> >
+> > - **弱引用**：GC回收，与软引用的区别：只具有**弱引用**的对象拥有**更短暂**的**生命周期**。在垃圾回收器线程扫描它所管辖的内存区域的过程中，一旦发现了只具有**弱引用**的对象，不管当前**内存空间足够与否**，都会**回收**它的内存。不过，由于垃圾回收器是一个**优先级很低的线程**，因此**不一定**会**很快**发现那些只具有**弱引用**的对象。生命周期基本由垃圾收集器决定
+> >
+> > - **虚引用**：主要用来跟踪对象被垃圾回收器回收的活动。程序可以通过判断引用**队列**中是否已经加入了**虚引用**，来了解被引用的对象是否将要进行**垃圾回收**。如果程序发现某个虚引用已经被加入到引用队列，那么就可以在所引用的对象的**内存被回收之前**采取必要的行动。
+>
+
+
+
+> 可达性分析：通过构造引用链，侦测没有依赖的对象
+>
 > > 当一个对象到GC Root没有路径时，可回收
 > >
 > > GC Root：正在运行的程序可访问的引用变量
@@ -604,55 +679,6 @@ Instanceof Cast，再比较关心的数据域
 > ##### JAVA会发生内存泄漏
 >
 > > 长生命周期对象持有短周期对象的引用
-
-
-
-## System类
-
-
-
-## JNI: Java Native Interface
-
-> 设计目的：进行系统调用(glibc.so)，访问系统资源/功能
->
-> - 输入、输出
-> - 文件系统
-> - 系统环境
-> - 网络
->
-> Java本身不能访问系统底层，所以需要调用c底层代码和操作系统打交道
->
-> 方法声明上加上native关键字:不需要在java写上实现代码
->
-> 用System.loadLibrary加载实现了这个方法/函数的动态链接库
->
-> native方法的实现
-
-
-
-## 配置文件读写
-
-> 配置文件：定义软件系统动态加载的配置
->
-> 
->
-> > 环境设置：如程序需要访问的远程数据库地址/端口
-> >
-> > 用户特定的设置
->
-> 常见扩展名：.conf .ini .cfg .properties
->
-> 文件格式：文本文件
->
-> > 每行为Key=Value格式
->
-> xml格式的配置文件
->
-> 
->
-> **使用Properties类**
->
-> - import java.util.Properties
 
 
 
@@ -758,6 +784,8 @@ Instanceof Cast，再比较关心的数据域
 > `import java.io.File ;` 用来与操作系统交互,实现各种文件操作（删除，重命名等）
 >
 > 构造方法:  File file =new File(String pathName)
+>
+> 为什么要有字符流而不全用字节流：字符流转换为字节流也需要消耗资源
 >
 > > ##### 字节流：
 > >
@@ -927,24 +955,24 @@ Instanceof Cast，再比较关心的数据域
 > > ```java
 > > Object a = new Object();
 > > synchronized(a){
-> >    //临界区
+> > //临界区
 > > }
 > > 
 > > ```
 > >
-> > 线程的执行过程:start -> run
+> > 线程的执行过程
 > >
 > > ```java
 > > class MyRunnable implements Runnable{
-> >    @OverRide
-> >    public void run(){
-> >       System.out.println("Hello World!");
-> >    }
+> > @OverRide
+> > public void run(){
+> >    System.out.println("Hello World!");
+> > }
 > > }
 > > 
 > > public static void main(String[] args){
-> >     Thread myThread new Thread(new MyRunnable());
-> >     myThread.start();
+> >  Thread myThread new Thread(new MyRunnable());
+> >  myThread.start();
 > > }
 > > ```
 > >
@@ -988,56 +1016,40 @@ Instanceof Cast，再比较关心的数据域
 
 
 
-## 编译
+## 线程池
 
-> java程序的编译、打包、运行
+> 基于池化思想管理线程的工具
 >
-> 编译(编译器）:javac 命令 javac Test.java
+> 减少处理任务时创建销毁线程开销的代价
 >
-> 打包： jar cvf Test.jar Test.class
+> 避免线程数量膨胀导致的过分调度问题
+
+
+
+### ThreadPoolExecutor
+
+> ![image-20211109202917406](C:\Users\wywfd\AppData\Roaming\Typora\typora-user-images\image-20211109202917406.png)
+> 线程池主要组成部分：任务队列和工作线程管理
 >
-> 运行(jvm)
+> ```java
+>  public static ExecutorService newCachedThreadPool()
+>  public static ExecutorService newFixedThreadPool(int nThreads)
+>  public static ExecutorService newSingleThreadExecutor()
+>  public static ScheduledExecutorService newScheduledThreadPool(int corePoolSize)
+> ```
 >
-> > java Test 
-> >
-> > java -cp Test.jar Test
+> 
 >
-> #### Jar包
+> [详细介绍](https://tech101.cn/2019/10/02/ThreadPoolExecutor%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86)
 >
-> > 基于zip文件格式的文件压缩包
-> >
-> > 包配置：jar包可以包含一个META-INF目录，存放配置信息
-> >
-> > 其中包含MAINIFEST.MF文件
-> >
-> > 版本信息等
+> ![image-20211109215726371](C:\Users\wywfd\AppData\Roaming\Typora\typora-user-images\image-20211109215726371.png)
+
 
 
 
 ## 集合类
 
-##### **Collection接口**(Set/List)：
-
-> > 如何方便支持不同类型的类的对象集：
-> >
-> > > 如String对象集，Integer对象集
-> > >
-> > > 泛型接口：interface Collection <E>
-> >
-> > 支持的操作：
-> >
-> > > add,remove,contains,isempty,size...
-> > >
-> > > addAll：把另一个集合所有数据加进来
-> > >
-> > > toArray：转换为数组
-> > >
-> > > iterator：返回一个Iterator对象，用于遍历数据
-> >
-> > 基于index的次序管理
->
-
-
+![image-20211023161128437](C:\Users\wywfd\AppData\Roaming\Typora\typora-user-images\image-20211023161128437.png)
 
 ##### **Map接口**(HashMap/TreeMap)：
 
@@ -1058,8 +1070,6 @@ Instanceof Cast，再比较关心的数据域
 > > > 不过都实现了Map,Clonable,Serializable这三个接口
 >
 
-
-
 ##### HashMap的底层实现原理：
 
 > > Hash值的计算：
@@ -1076,9 +1086,20 @@ Instanceof Cast，再比较关心的数据域
 > > >
 > > > 触发条件：负载因子>0.75
 >
-> **put**: 判断数组是否需要初始化，Key为空？计算hashcode，定位桶，如果是单链表则需要判断hashcode,key是否与传入的key相同并覆盖，如若为空，则创建一个Entry对象写入当前位置-->addEntry判断是否需要扩容，将所有key重新hash
+> **put**: 
+>
+> 1. 当桶数组 table 为空时，通过扩容的方式初始化 table
+> 2. 查找要插入的键值对是否已经存在，存在的话根据条件判断是否用新值替换旧值OnlyIfAbsent（仅为NULL时才替换）
+> 3. 如果不存在，则将键值对链入链表中，并根据链表长度决定是否将链表转为红黑树
+> 4. 判断键值对数量是否大于阈值，大于的话则进行扩容操作
 >
 > **get**:计算hashcode，然后定位到具体的桶中
+>
+> **resize()**:
+>
+> 1. 计算新桶数组的容量 newCap 和新阈值 newThr
+> 2. 根据计算出的 newCap 创建新的桶数组，桶数组 table 也是在这里进行初始化的
+> 3. 将键值对节点重新映射到新的桶数组里。如果节点是 TreeNode 类型，则需要拆分红黑树。如果是普通节点，则节点按原顺序进行分组。
 >
 > 
 >
@@ -1096,8 +1117,6 @@ Instanceof Cast，再比较关心的数据域
 >
 > **并发问题**： HashMap 扩容的时候会调用 `resize()` 方法，就是这里的并发操作容易在一个桶上形成环形链表；这样当获取一个不存在的 key 时，计算出的 index 正好是环形链表的下标就会出现死循环。
 
-
-
 ##### ConcurrentHashMap
 
 > jdk1.7
@@ -1111,6 +1130,87 @@ Instanceof Cast，再比较关心的数据域
 > jdk1.8
 >
 > > 其中抛弃了原有的 Segment 分段锁，而采用了 `CAS + synchronized` 来保证并发安全性。
+
+
+
+**源码分析**：
+
+> **size()**：counterBase+counterCells(counterCell[])
+>
+> **初始化**：put操作中检查，initTable
+>
+> ```java
+> 
+>  private final Node<K,V>[] initTable() {
+>      Node<K,V>[] tab; int sc;
+>      while ((tab = table) == null || tab.length == 0) {
+>          if ((sc = sizeCtl) < 0)
+>              Thread.yield(); // lost initialization race; just spin
+>          else if (U.compareAndSwapInt(this, SIZECTL, sc, -1)) {
+>              try {
+>                  if ((tab = table) == null || tab.length == 0) {
+>                      int n = (sc > 0) ? sc : DEFAULT_CAPACITY;
+>                      @SuppressWarnings("unchecked")
+>                      Node<K,V>[] nt = (Node<K,V>[])new Node<?,?>[n];
+>                      table = tab = nt;
+>                      sc = n - (n >>> 2);
+>                  }
+>              } finally {
+>                  sizeCtl = sc;
+>              }
+>              break;
+>          }
+>      }
+>      return tab;
+>  }
+> 
+> 
+> ```
+>
+> `private transient volatile sizeCTL`：如果为负数則説明有其他线程在进行初始化操作，保证线程并发安全，没有获取的线程自选来尝试获得该变量，所以获得的线程需要修改`sizeCTL`值来使其他线程走出自旋进行接下来的操作。这里出初始化采用了单例中的两重检验方式
+>
+> `get`：volatile关键字实现可见性，Node节点中的数据添加关键字volatile
+>
+> `put`：更新记录数量：addCount()实现，需要考虑是否超过阈值而进行扩容，baseCount当前记录数量，如果table过小，则需要进行扩容，首先找到对应的index，如果头节点为空，`CAS`更新，若不为空且有线程在进行扩容，帮助扩容helptransfer()，否则synchronized锁住头节点，进行类似HashMap的put操作
+>
+> `addCount`：table中元素个数达到容器阈值sizeCtl时，进行扩容，put方法最后调用`addCount(long x,int check)`：计算baseCount、检测是否需要扩容操作
+>
+> `扩容过程`：
+>
+> 	1. 单线程下构建一个nextTable，大小为原来两倍
+> 	2. 多线程transfer将原数组的内容复制到nextTable中
+>
+> `size计算`:baseCount + CounterCells[0...n-1].value，如果两个线程同时执行CAS修改baseCount值，则失败的线程会执行方法体中的逻辑，使用CounterCell记录元素个数的变化：元素个数保存在baseCount中，部分元素的变化个数保存在CounterCell数组中
+
+> 
+>
+> > 为什么抛弃分段锁：
+> >
+> > > - ReentrantLock占用内存(Sync继承了AQS)
+> > > - 很少会发生hash冲突，锁粒度太大
+> > > - JVM优化
+
+
+
+##### **Collection接口**(Set/List)：
+
+> > 如何方便支持不同类型的类的对象集：
+> >
+> > > 如String对象集，Integer对象集
+> > >
+> > > 泛型接口：interface Collection <E>
+> >
+> > 支持的操作：
+> >
+> > > add,remove,contains,isempty,size...
+> > >
+> > > addAll：把另一个集合所有数据加进来
+> > >
+> > > toArray：转换为数组
+> > >
+> > > iterator：返回一个Iterator对象，用于遍历数据
+> >
+> > 基于index的次序管理
 
 
 
@@ -1131,10 +1231,31 @@ Instanceof Cast，再比较关心的数据域
 
 
 
+##### Collection/Queue
+
+> 两类操作，是否抛出异常
+>
+> add/offer
+>
+> remove/poll
+>
+> element/peek
+
+
+
 ##### Collection/List
 
 > - ArrayList 能自动增长容量的数组 toArray：返回数组 asList：返回列表
-> - LinkedList 双链表：
+>
+>   继承自AbstractList, add remove都要调用System.arraycopy()
+>
+> - LinkedList 双链表：继承自AbstractSquentialList，查询、删除等操作for遍历，性能比ArrayList差
+>
+> - Vector线程安全  
+>
+>   >Stack{empty/peek/pop/push/search}
+>
+> 线程安全的list:
 
 
 
@@ -1145,10 +1266,62 @@ Instanceof Cast，再比较关心的数据域
 > 特性：如果有两个类A和B，如果B继承（extends）了A，那么A[]类型的引用就可以指向B[]类型的对象
 >
 > ```java
->  String[][] ss = new String[2][3];
->         System.out.println(ss.getClass().getName());
->         //打印出的数组类的名字为    [[Ljava.lang.String;
+> String[][] ss = new String[2][3];
+>      System.out.println(ss.getClass().getName());
+>      //打印出的数组类的名字为    [[Ljava.lang.String;
 > ```
 >
 > [[代表维度
+>
+> 数组怎么转化为List类型：
+>
+> > -  Arrays.asList( T[]):返回的类型为java.util.Arrays.ArrayList静态内部类，不支持add()
+> > - 将上面的静态内部类转化为java.util.ArrayList
+> > - Collections.addAll() 高效，支持增删
+> >
+> > java泛型类型为引用,所以int[]数组转换后会变为List<int[]>
+> >
+> > ```java
+> > Arrays.asList( int[] ) -> List<int [] >
+> > ```
+> >
+
+
+## JAVA 8
+
+
+
+### Lambda
+
+> 实现匿名内部类的方式，接口名函数名一同省掉，前提是必须有相应的函数接口(内部只有一个抽象方法的接口)
+
+### Stream
+
+> 数组创建流：`Arrays.stream()`或者`Stream.of()`
+>
+> 集合创建流：`.stream()`
+
+##### 操作流：
+
+> - filter()：接收一个Predicate接口filter(element -> element.contains("...")
+>
+> - forEach()：接收一个Consumer接口，参数类型为:类名::方法名
+>
+> - map()：把一个流中的元素转化为新的流中的元素，接收一个Function接口，参数类型为T，返回结果为R，map(String::length)
+>
+> - 匹配:接收一个Predicate接口，同filter()
+>
+>   anyMatch()
+>
+>   allMatch()
+>
+>   noneMatch()
+>
+> - reduce()：把Stream中的元素组合起来，主要有两种用法：
+>
+>   Optional<T> reduce(BinaryOperator<T> accumulator)
+>
+>   T reduce(T identity, BinaryOperator<T> accumulator)
+>
+> - collect()：转换流
 
