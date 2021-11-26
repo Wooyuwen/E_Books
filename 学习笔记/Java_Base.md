@@ -1,6 +1,6 @@
 ## 基本概念
 
-#### 修饰符、关键字
+#### 关键字
 
 > > ##### `final`: （类，方法，变量）
 >
@@ -198,6 +198,26 @@
 
 
 
+#### 正则表达式
+
+> 搜索、编辑和操作文本
+>
+> \s：空格字符
+>
+> \d：数字，\d+：至少一个数字
+>
+> ^：匹配开头
+>
+> ()?：标识括号中内容可选
+>
+> [常见匹配规则](https://segmentfault.com/a/1190000009162306)
+>
+> ```java
+>  Patterns.match(String expr,String t);
+> ```
+>
+> 
+
 ####  JVM内存结构
 
 > 共用：
@@ -257,7 +277,7 @@
 
 
 
-#### 静态分派和动态分派
+#### 静态动态分派
 
 > 函数调用在class文件中存储的是符号引用
 >
@@ -273,28 +293,12 @@
 
 
 
-#### 抽象类和抽象方法
+#### 抽象类方法
 
 > - 抽象类不能被实例化
 > - 抽象类中不一定含有抽象方法，但是抽象方法一定属于抽象类
 > - 抽象类中的抽象方法只是声明，不包含方法体（jdk1.8有默认实现）
 > - 构造方法和类方法（用static修饰的方法）不能声明为抽象方法
-
-
-
-#### 创建的对象存储
-
-> - 寄存器：最快的存储区，位于处理器的内部，但是数量有限
->
-> - 堆栈：位于通用RAM（随机访问存储器），常存储对象的引用；堆栈指针的上下移动可以实现内存的分配和释放。
->
->   > `hints:`创建程序时，Java系统必须知道存储在堆栈内所有项的确切生命周期
->
-> - 堆：通用的内存池，用于存放所有的对象，常用操作符为`new`关键字。
->
-> - 常量存储：通常直接存放在程序代码内部，比较安全，永远不会改变。
->
-> - 非RAM存储：如果数据完全存活于程序之外，不受程序的任何控制，在程序没有运行时也可以存在：`持久化对象` `流对象`。在流对象中，对象转化成字节流，通常被发送给另一台机器。在持久化对象中，对象被放在磁盘上，因此，即使程序终止，他们仍能保持自己的状态，这种存储方式的技巧在于：将对象转化为可以存放在其他媒介上的事物，在需要时，可以恢复成常规的、基于RAM的对象。JAVA提供了对轻量级持久化的支持。
 
 
 
@@ -412,7 +416,7 @@
 
 
 
-#### Java泛型类
+#### 泛型
 
 > 类的泛型（模板类）
 >
@@ -430,13 +434,15 @@
 
 
 
-#### Java泛型接口、泛型方法
+**静态方法支持泛型方法**
 
-> 静态方法支持泛型方法
+
 
 **没有泛型对象数组**
 
 JAVA泛型只在编译时处理
+
+怎么避免类型擦除：反射
 
 
 
@@ -446,9 +452,11 @@ ArrayList 视为变长数组
 
 LinkedList视为链表
 
-## Object 方法
 
-#### public `boolean equals()`  
+
+## Object
+
+#### equals
 
 自反，对称，传递，一致
 
@@ -479,7 +487,7 @@ Instanceof Cast，再比较关心的数据域
 
 
 
-#### public native `int hashCode()`
+#### hashCode
 
 > - 返回哈希值，等价的两个对象散列值一定相同
 >
@@ -498,13 +506,31 @@ Instanceof Cast，再比较关心的数据域
 
 
 
-#### public string toString()
+#### toString
 
-> 默认返回 ClassName@442142c的形式，@后数值为散列的无符号十六进制表示
+> 默认返回 `ClassName@442142c`的形式，@后数值为散列的无符号十六进制表示
 
 
 
-#### protected native `Object clone()` throws CloneNotSupportedException
+#### instanceOf
+
+> a instanceof B
+>
+> 判断a是不是B这个类或者接口的实例
+>
+> 
+>
+>  如果B是对应的类a=new B();
+> 
+>  或者，是a对应的类的父类
+> 
+>  或者，是a对应的类实现的接口
+
+
+
+
+
+#### clone
 
 > 一个类不显示重写clone()，其他类就不能直接调用该实例的clone()方法
 >
@@ -593,26 +619,6 @@ Instanceof Cast，再比较关心的数据域
 
 
 
-## instanceof 关键字
-
-> 布尔计算(boolean)
->
-> Object instanceof Class
->
-> a instanceof B
->
-> > 判断a是不是B这个类或者接口的实例
-> >
-> > 返回true
-> >
-> > > 如果B是对应的类a=new B();
-> > >
-> > > 或者，是a对应的类的父类
-> > >
-> > > 或者，是a对应的类实现的接口
-
-
-
 ## GC
 
 > GC的时候，所有线程都暂停，直到GC结束
@@ -631,13 +637,13 @@ Instanceof Cast，再比较关心的数据域
 > >       ReferenceQueue<String> referenceQueue = new ReferenceQueue<>();
 > >       String str = new String("abc");
 > >       SoftReference<String> softReference = new SoftReference<>(str, referenceQueue);
-> >               
+> >                       
 > >       str = null;
 > >       // Notify GC
 > >       System.gc();
-> >               
+> >                       
 > >       System.out.println(softReference.get()); // abc
-> >               
+> >                       
 > >       Reference<? extends String> reference = referenceQueue.poll();
 > >       System.out.println(reference); //null
 > >   ```
@@ -686,7 +692,7 @@ Instanceof Cast，再比较关心的数据域
 
 > java.lang.Throwable可以用来表示任何可以作为异常抛出的类，分为两种`Error`和`Exception`
 
-#### Error （可以不检查）
+#### Error
 
 > 其中`Error`用来表示JVM无法处理的错误：脱离程序员控制的，例如栈溢出，编译时检查不到
 >
@@ -775,11 +781,9 @@ Instanceof Cast，再比较关心的数据域
 
 
 
-## JAVA 文件操作
 
 
-
-#### Java File 类
+## File 类
 
 > `import java.io.File ;` 用来与操作系统交互,实现各种文件操作（删除，重命名等）
 >
@@ -1051,7 +1055,7 @@ Instanceof Cast，再比较关心的数据域
 
 ![image-20211023161128437](C:\Users\wywfd\AppData\Roaming\Typora\typora-user-images\image-20211023161128437.png)
 
-##### **Map接口**(HashMap/TreeMap)：
+#### **Map**：
 
 > > 管理键值对：每个值对应一个全局唯一的键
 > >
@@ -1070,7 +1074,9 @@ Instanceof Cast，再比较关心的数据域
 > > > 不过都实现了Map,Clonable,Serializable这三个接口
 >
 
-##### HashMap的底层实现原理：
+
+
+##### HashMap：
 
 > > Hash值的计算：
 > >
@@ -1192,7 +1198,7 @@ Instanceof Cast，再比较关心的数据域
 
 
 
-##### **Collection接口**(Set/List)：
+#### **Collection**
 
 > > 如何方便支持不同类型的类的对象集：
 > >
@@ -1301,7 +1307,7 @@ Instanceof Cast，再比较关心的数据域
 >
 > 集合创建流：`.stream()`
 
-##### 操作流：
+##### 
 
 > - filter()：接收一个Predicate接口filter(element -> element.contains("...")
 >
